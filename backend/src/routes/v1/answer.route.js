@@ -13,8 +13,8 @@ router
   .post(auth('updateAnswer'), validate(ansValidation.updateAnswer), ansController.updateAnswer)
   .delete(auth('deleteAnswer'), validate(ansValidation.deleteAnswer), ansController.deleteAnswer);
 
-// router
-//   .route('/:answerId/pick-correct')
-  // .post(auth('pickCorrectAnswer'), validate(ansValidation.pickCorrectAnswer), ansController.pickCorrectAnswer);
+router
+  .route('/:answerId/pick-correct')
+  .post(auth('pickCorrectAnswer'), validate(ansValidation.pickCorrectAnswer), ansController.pickCorrectAnswer);
 
 module.exports = router;
