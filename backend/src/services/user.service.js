@@ -1,11 +1,16 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcrypt');
-const { PrismaClient } = require('@prisma/client');
-
+const { User } = require('../models');
+const { PrismaClient, Prisma } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const ApiError = require('../utils/ApiError');
 
+/**
+ * Create a user
+ * @param {Object} userBody
+ * @returns {Promise<User>}
+ */
 const createUser = async (userBody) => {
   const saltRounds = 10;
 
@@ -21,11 +26,25 @@ const createUser = async (userBody) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Username already taken');
   }
 
-  const user = await prisma.users.create({
+  const user = prisma.users.create({
     data: userBody,
   });
 
   return user;
+};
+
+/**
+ * Query for users
+ * @param {Object} filter - Mongo filter
+ * @param {Object} options - Query options
+ * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+ * @param {number} [options.limit] - Maximum number of results per page (default = 10)
+ * @param {number} [options.page] - Current page (default = 1)
+ * @returns {Promise<QueryResult>}
+ */
+const queryUsers = async (filter, options) => {
+  const users = await User.paginate(filter, options);
+  return users;
 };
 
 const getUserById = async (id) => {
@@ -47,6 +66,11 @@ const getUserById = async (id) => {
   return user;
 };
 
+/**
+ * Get user by email
+ * @param {string} email
+ * @returns {Promise<User>}
+ */
 const getUserByUsername = async (username) => {
   return prisma.users.findUnique({
     where: {
@@ -55,6 +79,12 @@ const getUserByUsername = async (username) => {
   });
 };
 
+/**
+ * Update user by id
+ * @param {ObjectId} userId
+ * @param {Object} updateBody
+ * @returns {Promise<User>}
+ */
 const updateUserById = async (userId, updateBody) => {
   const checkUserExists = await getUserById(userId);
   if (!checkUserExists) {
@@ -74,6 +104,7 @@ const updateUserById = async (userId, updateBody) => {
 
 module.exports = {
   createUser,
+  queryUsers,
   getUserById,
   getUserByUsername,
   updateUserById,
