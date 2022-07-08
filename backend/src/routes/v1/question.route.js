@@ -22,4 +22,9 @@ route
     .route('/feed/:page')
     .get(auth('getLatestFeed'), validate(questionValidation.getLatestFeed), questionControlller.getLatestFeed);
 
+route
+    .route('/:questionId/:page/:limit')
+    .get(auth('getAllAnswersAndVotings'), validate(questionValidation.getAllAnswersAndVotings), 
+    questionControlller.getAllAnswersAndVotings);
+    
 module.exports = route;

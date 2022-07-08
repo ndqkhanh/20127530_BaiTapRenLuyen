@@ -21,6 +21,10 @@ const updateQuestion = {
 };
 
 const searchQuestion = {
+    params : Joi.object().keys({
+        offset: Joi.number().required(),
+        limit: Joi.number().required(),
+    }),
     body: Joi.object().keys({
         keyword: Joi.string().required(),
     }),
@@ -32,10 +36,18 @@ const getLatestFeed = {
     }),
 };
 
+const getAllAnswersAndVotings = {
+    params : Joi.object().keys({
+        questionId: Joi.string().uuid().required(),
+        page: Joi.number().required(),
+        limit: Joi.number().required(),
+    }),
+};
 module.exports = {
     createQuestion,
     deleteQuestion,
     updateQuestion,
     searchQuestion,
     getLatestFeed,
+    getAllAnswersAndVotings,
 };

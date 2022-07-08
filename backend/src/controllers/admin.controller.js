@@ -12,6 +12,12 @@ const banUser = catchAsync(async (req, res) => {
   res.send({ success: !!user });
 });
 
+const setConfiguration = catchAsync(async (req, res) =>
+{
+  const config = await adminService.setConfiguration(req);
+  res.send({success: !! config});
+});
+
 const getPendingQuestions = catchAsync(async (req, res) => {
   const result = await adminService.getPendingQuestions(req.params.page, req.params.limit);
   res.send(result);
@@ -39,4 +45,5 @@ module.exports = {
   approveDeclineQuestion,
   getUsers,
   listConfigurations,
+  setConfiguration,
 };

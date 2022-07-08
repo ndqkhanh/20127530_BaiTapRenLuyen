@@ -1,5 +1,6 @@
 const allRoles = {
   user: [
+    'getProfile',
     'getUser',
     'updateUser',
     'createQuestion',
@@ -16,7 +17,7 @@ const allRoles = {
 
   moderator: ['approveDeclineQuestion', 'getPendingQuestions', 'banUser', 'getMetrics', 'getUsers'],
 
-  admin: ['listConfigurations'],
+  admin: ['listConfigurations', 'setConfiguration', 'getAllAnswersAndVotings'],
 };
 
 allRoles.moderator = [...allRoles.moderator, ...allRoles.user];

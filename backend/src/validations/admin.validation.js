@@ -10,6 +10,17 @@ const banUser = {
   }),
 };
 
+
+const setConfiguration = {
+  params: Joi.object().keys(
+    {
+      slug: Joi.string().required(),
+    }),
+  body: Joi.object().keys({
+    value: Joi.string(),
+  }),
+};
+
 const getPendingQuestions = {
   params: Joi.object().keys({
     page: Joi.number().required(),
@@ -33,6 +44,7 @@ const getUsers = {
 
 module.exports = {
   banUser,
+  setConfiguration,
   getPendingQuestions,
   approveDeclineQuestion,
   getUsers,

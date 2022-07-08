@@ -24,8 +24,10 @@ const updateQuestion = catchAsync ( async (req, res) =>
 );
 
 const searchQuestion = catchAsync (async (req, res) => {
+    const countQuestions = await questionService.countQuestionInDB(req);
     const listQuestions = await questionService.searchQuestion(req);
-    res.send(listQuestions);
+    res.send({ count: countQuestions,
+        questions: listQuestions,});
 });
 
 const getLatestFeed = catchAsync (async (req, res) => {
@@ -33,10 +35,20 @@ const getLatestFeed = catchAsync (async (req, res) => {
     res.send(latestFeed);
 });
 
+const getAllAnswersAndVotings = catchAsync ( async (req, res) => {
+    const questionRecord = await questionService.getQuestionByID(req);
+    const countAnswer = await questionService.countAnswerByQuestionID(req);
+    const answers = await questionService.GetAnswersByQuestionIDPagination (req);
+    const answersAndvotings = await questionService.GetAnswersAndVotings (answers);
+    res.send({question: questionRecord, 
+        answers: {count: countAnswer, data: answersAndvotings}});
+
+}); 
 module.exports = {
     createQuestion,
     deleteQuestion,
     updateQuestion,
     searchQuestion,
     getLatestFeed,
+    getAllAnswersAndVotings,
 };
